@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách thiết bị</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          crossorigin="anonymous">
+</head>
+<body class="container mt-4">
+
+<h2 class="mb-3">Danh sách thiết bị</h2>
+<a class="btn btn-success mb-3" th:href="@{/device/new}">+ Thêm thiết bị</a>
+
+<form th:action="@{/device}" method="get" class="d-flex mb-3">
+    <input type="text" name="keyword" th:value="${keyword}" class="form-control me-2" placeholder="Tìm theo tên"/>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<table class="table table-bordered table-sm">
+    <thead class="table-light">
+    <tr>
+        <th>ID</th>
+        <th>Tên</th>
+        <th>Code</th>
+        <th>Giá</th>
+        <th>Ngày sản xuất</th>
+        <th>Ảnh sản phẩm</th>
+        <th>Thương hiệu</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="dev : ${devices}">
+        <td th:text="${dev.id}"></td>
+        <td th:text="${dev.deviceName}"></td>
+        <td th:text="${dev.modelCode}"></td>
+        <td th:text="${#numbers.formatDecimal(dev.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+        <td th:text="${dev.manufactureDate}"></td>
+        <td>
+            <img th:if="${dev.productImage != null}"
+                 th:src="@{'/uploads/' + ${dev.productImage}}"
+                 alt="Ảnh sản phẩm" width="100"/>
+            <span th:if="${dev.productImage == null}">Không có ảnh</span>
+        </td>
+        <td th:text="${dev.brand != null ? dev.brand.name : 'Chưa phân bổ'}"></td>
+        <td th:text="${dev.isAvailable==true?'Còn bán':'Không còn bán'}"></td>
+        <td>
+            <a th:href="@{'/device/edit/' + ${dev.id}}" class="btn btn-warning btn-sm">Sửa</a>
+            <a th:href="@{'/device/delete/' + ${dev.id}}"
+               class="btn btn-danger btn-sm"
+               onclick="return confirm('Bạn có chắc muốn xóa thiết bị này?')">Xóa</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:if="${devices.size() == 0}" class="mt-2 text-danger">
+    Không tìm thấy sản phẩm nào
+</div>
+
+<div class="pagination mt-3">
+    <a th:if="${currentPage > 0}"
+       th:href="@{/device(page=${currentPage-1}, sortField=${sortField}, sortDir=${sortDir}, keyword=${keyword})}"
+       class="btn btn-outline-secondary me-2">←</a>
+
+    <span th:each="i : ${#numbers.sequence(0, totalPages-1)}">
+        <a th:href="@{/device(page=${i}, sortField=${sortField}, sortDir=${sortDir}, keyword=${keyword})}"
+           th:text="${i+1}"
+           th:classappend="${i == currentPage} ? 'btn btn-primary me-1' : 'btn btn-outline-primary me-1'"></a>
+    </span>
+
+    <a th:if="${currentPage < totalPages-1}"
+       th:href="@{/device(page=${currentPage+1}, sortField=${sortField}, sortDir=${sortDir}, keyword=${keyword})}"
+       class="btn btn-outline-secondary ms-2">→</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        crossorigin="anonymous"></script>
+</body>
+</html>
