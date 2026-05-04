@@ -36,7 +36,9 @@
 
     <div class="mb-3">
         <label class="form-label">Ngày sản xuất</label>
-        <input type="date" th:field="*{manufactureDate}" class="form-control"/>
+        <input type="date" th:field="*{manufactureDate}"
+               th:value="${#temporals.format(device.manufactureDate, 'yyyy-MM-dd')}" />
+
         <div th:if="${#fields.hasErrors('manufactureDate')}" th:errors="*{manufactureDate}" class="text-danger small"></div>
     </div>
 

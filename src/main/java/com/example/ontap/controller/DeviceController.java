@@ -32,7 +32,6 @@ public class DeviceController {
         this.fileStorageService = fileStorageService;
     }
 
-    // Danh sách thiết bị
     @GetMapping
     public String listDevices(@RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "5") int size,
@@ -62,7 +61,6 @@ public class DeviceController {
         return "device-list";
     }
 
-    // Form tạo mới
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("device", new DeviceDto());
@@ -70,7 +68,6 @@ public class DeviceController {
         return "device-form";
     }
 
-    // Lưu thiết bị mới
     @PostMapping("/save")
     public String saveDevice(@Valid @ModelAttribute("device") DeviceDto deviceDto,
                              BindingResult result,
@@ -98,7 +95,6 @@ public class DeviceController {
         return "redirect:/device";
     }
 
-    // Form chỉnh sửa
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Device dev = deviceRepository.findById(id)
@@ -118,7 +114,6 @@ public class DeviceController {
         return "device-form";
     }
 
-    // Cập nhật thiết bị
     @PostMapping("/update/{id}")
     public String updateDevice(@PathVariable Long id,
                                @Valid @ModelAttribute("device") DeviceDto deviceDto,
@@ -149,7 +144,6 @@ public class DeviceController {
         return "redirect:/device";
     }
 
-    // Xóa thiết bị
     @GetMapping("/delete/{id}")
     public String deleteDevice(@PathVariable Long id) {
         Device dev = deviceRepository.findById(id)

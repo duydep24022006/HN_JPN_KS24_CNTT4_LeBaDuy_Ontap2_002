@@ -1,6 +1,5 @@
 package com.example.ontap.dto;
 
-import com.example.ontap.entity.Brand;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,8 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Getter
-@Setter
+
 public class DeviceDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
